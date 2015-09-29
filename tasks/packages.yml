@@ -1,8 +1,16 @@
 ---
 
+- name: packages > Manage packages (force option)
+  apt:
+    name:  "{{ item.name }}"
+    force: "{{ item.force }}"
+    state: "{{ item.state|default('present') }}"
+  with_items: elao_apt_packages
+  when: item.force is defined
+
 - name: packages > Manage packages
   apt:
     name:  "{{ item.name }}"
-    force: "{{ item.force|default(omit) }}"
     state: "{{ item.state|default('present') }}"
   with_items: elao_apt_packages
+  when: item.force is not defined
